@@ -1,0 +1,111 @@
+/* =========================================================
+   AXTEC AI — embeddable widget styles
+   Uses the same visual language as the AXTEC site.
+   Prefix every class with .axai- to avoid collisions with host page CSS.
+   ========================================================= */
+:root{
+  --axai-bg:#07070A;
+  --axai-bg2:#0F1016;
+  --axai-ink:#FFFFFF;
+  --axai-ink2:#A7A7B0;
+  --axai-blue:#5B5BF7;
+  --axai-violet:#8B5CF6;
+  --axai-magenta:#EC4899;
+  --axai-grad: linear-gradient(105deg, var(--axai-blue), var(--axai-violet) 55%, var(--axai-magenta));
+  --axai-line: rgba(167,167,176,0.18);
+}
+.axai-root, .axai-root *{ box-sizing:border-box; font-family: 'Instrument Sans', system-ui, -apple-system, sans-serif; }
+
+.axai-launcher{
+  position:fixed; bottom:28px; right:28px; z-index:9999;
+  display:flex; align-items:center; gap:10px;
+  background:var(--axai-bg2); border:1px solid var(--axai-line); color:var(--axai-ink);
+  padding:12px 18px 12px 14px; border-radius:999px; font-size:13.5px; font-weight:600;
+  box-shadow:0 14px 30px -12px rgba(0,0,0,.6);
+  transition:transform .2s ease, border-color .2s ease;
+}
+.axai-launcher:hover{ transform:translateY(-2px); border-color:var(--axai-ink2); }
+.axai-launcher .axai-dot{ width:28px; height:28px; border-radius:50%; background:var(--axai-grad); flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+
+.axai-panel{
+  position:fixed; bottom:96px; right:28px; z-index:9999;
+  width:380px; max-width:92vw; height:560px; max-height:80vh;
+  background:var(--axai-bg2); border:1px solid var(--axai-line); border-radius:20px;
+  display:none; flex-direction:column; overflow:hidden;
+  box-shadow:0 40px 80px -20px rgba(0,0,0,.75);
+  color:var(--axai-ink);
+  animation:axai-in .25s ease;
+}
+.axai-panel.axai-open{ display:flex; }
+@keyframes axai-in{ from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
+
+.axai-head{
+  padding:16px 16px; border-bottom:1px solid var(--axai-line);
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+}
+.axai-head-left{ display:flex; align-items:center; gap:10px; }
+.axai-status-dot{ width:8px; height:8px; border-radius:50%; background:#4ade80; }
+.axai-head b{ font-size:14px; }
+.axai-lang-toggle{ display:flex; border:1px solid var(--axai-line); border-radius:999px; overflow:hidden; }
+.axai-lang-toggle button{ background:none; border:none; color:var(--axai-ink2); font-size:11px; padding:5px 9px; cursor:pointer; }
+.axai-lang-toggle button.axai-active{ background:var(--axai-grad); color:#fff; }
+
+.axai-body{
+  flex:1; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:10px;
+}
+.axai-msg{ max-width:82%; padding:10px 14px; border-radius:14px; font-size:13.5px; line-height:1.5; white-space:pre-wrap; }
+.axai-msg.axai-bot{ background:rgba(255,255,255,.06); align-self:flex-start; border-bottom-left-radius:4px; }
+.axai-msg.axai-user{ background:var(--axai-grad); align-self:flex-end; border-bottom-right-radius:4px; }
+.axai-msg.axai-typing{ display:flex; gap:4px; padding:12px 16px; }
+.axai-msg.axai-typing span{ width:6px; height:6px; border-radius:50%; background:var(--axai-ink2); animation:axai-bounce 1.2s infinite; }
+.axai-msg.axai-typing span:nth-child(2){ animation-delay:.15s; }
+.axai-msg.axai-typing span:nth-child(3){ animation-delay:.3s; }
+@keyframes axai-bounce{ 0%,60%,100%{ transform:translateY(0); opacity:.4;} 30%{ transform:translateY(-4px); opacity:1;} }
+
+.axai-quick{ display:flex; flex-wrap:wrap; gap:7px; padding:0 16px 12px; }
+.axai-quick button{
+  font-size:12.5px; border:1px solid var(--axai-line); background:transparent; color:var(--axai-ink);
+  padding:7px 12px; border-radius:999px; cursor:pointer; transition:border-color .2s;
+}
+.axai-quick button:hover{ border-color:var(--axai-ink2); }
+
+/* estimate card */
+.axai-card{
+  border:1px solid var(--axai-line); border-radius:14px; padding:18px; margin:4px 0;
+  background:linear-gradient(160deg, rgba(91,91,247,.08), rgba(236,72,153,.05));
+}
+.axai-card-eyebrow{ font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--axai-ink2); margin-bottom:8px; }
+.axai-card-title{ font-size:17px; font-weight:700; margin-bottom:2px; }
+.axai-card-tier{ display:inline-block; font-size:11px; padding:3px 9px; border-radius:999px; background:var(--axai-grad); margin:6px 0 12px; }
+.axai-card-price{ font-size:22px; font-weight:800; background:var(--axai-grad); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.axai-card-time{ font-size:12.5px; color:var(--axai-ink2); margin-top:2px; }
+.axai-card-features{ margin-top:12px; display:flex; flex-direction:column; gap:5px; font-size:12.5px; }
+.axai-card-features span{ color:var(--axai-ink2); }
+.axai-card-disclaimer{ font-size:10.5px; color:var(--axai-ink2); margin-top:12px; line-height:1.5; }
+.axai-card-actions{ display:flex; gap:8px; margin-top:14px; flex-wrap:wrap; }
+.axai-btn{ font-size:12px; padding:8px 13px; border-radius:999px; border:1px solid var(--axai-line); background:transparent; color:var(--axai-ink); cursor:pointer; }
+.axai-btn-primary{ background:var(--axai-grad); border:none; color:#fff; font-weight:600; }
+
+/* lead form */
+.axai-form{ display:flex; flex-direction:column; gap:8px; margin-top:6px; }
+.axai-form input{
+  background:var(--axai-bg); border:1px solid var(--axai-line); border-radius:8px; padding:9px 11px;
+  font-size:13px; color:var(--axai-ink);
+}
+.axai-form input:focus{ outline:none; border-color:var(--axai-violet); }
+
+/* side project panel */
+.axai-side{ border-top:1px solid var(--axai-line); padding:12px 16px; font-size:12px; }
+.axai-side-title{ font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--axai-ink2); margin-bottom:8px; }
+.axai-side-row{ display:flex; justify-content:space-between; padding:3px 0; color:var(--axai-ink2); }
+.axai-side-row b{ color:var(--axai-ink); font-weight:600; }
+
+.axai-inputrow{ display:flex; border-top:1px solid var(--axai-line); }
+.axai-inputrow input{ flex:1; background:transparent; border:none; padding:13px 16px; font-size:13.5px; color:var(--axai-ink); }
+.axai-inputrow input:focus{ outline:none; }
+.axai-inputrow button{ padding:0 16px; background:none; border:none; color:var(--axai-violet); font-weight:700; font-size:13px; cursor:pointer; }
+
+@media (max-width:480px){
+  .axai-panel{ right:12px; left:12px; width:auto; bottom:84px; }
+  .axai-launcher{ right:16px; bottom:16px; }
+}

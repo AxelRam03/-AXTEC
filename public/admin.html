@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AXTEC — Pricing Admin</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  body{ background:#07070A; color:#fff; font-family:system-ui,sans-serif; margin:0; padding:40px; }
+  h1{ font-size:22px; }
+  table{ width:100%; border-collapse:collapse; margin-top:20px; }
+  th,td{ padding:8px 10px; border-bottom:1px solid rgba(167,167,176,.2); font-size:13px; text-align:left; }
+  input{ background:#0F1016; border:1px solid rgba(167,167,176,.3); color:#fff; padding:5px 7px; border-radius:6px; width:90px; }
+  button{ background:linear-gradient(105deg,#5B5BF7,#8B5CF6,#EC4899); border:none; color:#fff; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:12px; }
+  #key{ width:280px; }
+  .msg{ font-size:12px; color:#A7A7B0; margin-top:6px;}
+</style>
+</head>
+<body>
+  <h1>AXTEC — Pricing rules admin</h1>
+  <p class="msg">Enter your ADMIN_API_KEY (set in .env) to load and edit pricing rules. Nothing is sent anywhere except this backend.</p>
+  <input id="key" type="password" placeholder="Admin API key">
+  <button onclick="loadRules()">Load rules</button>
+  <table id="tbl" style="display:none;">
+    <thead><tr><th>ID</th><th>Service</th><th>Feature</th><th>Min $</th><th>Max $</th><th>Days min</th><th>Days max</th><th>Active</th><th></th></tr></thead>
+    <tbody id="tbody"></tbody>
+  </table>
+  <p class="msg" id="status"></p>
+
+<script>
+const API = window.location.origin;
+async function loadRules(){
+  const key = document.getElementById('key').value;
+  const res = await fetch(API + '/api/pricing/admin', { headers: { 'x-admin-key': key } });
+  if(!res.ok){ document.getElementById('status').textContent = 'Unauthorized or error loading rules.'; return; }
+  const data = await res.json();
+  const tbody = document.getElementById('tbody');
+  tbody.innerHTML = '';
+  data.rules.forEach(r=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${r.id}</td><td>${r.service}</td><td>${r.feature}</td>
+      <td><input data-field="min_price" value="${r.min_price}"></td>
+      <td><input data-field="max_price" value="${r.max_price}"></td>
+      <td><input data-field="estimated_days_min" value="${r.estimated_days_min}" style="width:50px;"></td>
+      <td><input data-field="estimated_days_max" value="${r.estimated_days_max}" style="width:50px;"></td>
+      <td><input type="checkbox" data-field="active" ${r.active?'checked':''}></td>
+      <td><button data-id="${r.id}" data-service="${r.service}" data-feature="${r.feature}" data-les="${r.label_es}" data-len="${r.label_en}">Save</button></td>
+    `;
+    tbody.appendChild(tr);
+  });
+  document.getElementById('tbl').style.display = 'table';
+  document.getElementById('status').textContent = `Loaded ${data.rules.length} rules.`;
+
+  tbody.querySelectorAll('button').forEach(btn=>{
+    btn.onclick = async ()=>{
+      const tr = btn.closest('tr');
+      const body = {
+        service: btn.dataset.service,
+        feature: btn.dataset.feature,
+        label_es: btn.dataset.les,
+        label_en: btn.dataset.len,
+        min_price: Number(tr.querySelector('[data-field=min_price]').value),
+        max_price: Number(tr.querySelector('[data-field=max_price]').value),
+        estimated_days_min: Number(tr.querySelector('[data-field=estimated_days_min]').value),
+        estimated_days_max: Number(tr.querySelector('[data-field=estimated_days_max]').value),
+        active: tr.querySelector('[data-field=active]').checked,
+      };
+      const res = await fetch(`${API}/api/pricing/admin/${btn.dataset.id}`, {
+        method:'PUT',
+        headers:{ 'Content-Type':'application/json', 'x-admin-key': document.getElementById('key').value },
+        body: JSON.stringify(body)
+      });
+      document.getElementById('status').textContent = res.ok ? `Saved ${btn.dataset.id}.` : `Error saving ${btn.dataset.id}.`;
+    };
+  });
+}
+</script>
+</body>
+</html>

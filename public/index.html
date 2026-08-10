@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>AXTEC AI — Demo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Instrument+Sans&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="axtec-ai-widget.css">
+<style>
+  body{ background:#07070A; color:#fff; font-family:'Instrument Sans',sans-serif; margin:0; padding:80px 24px; }
+  h1{ font-family:'Bricolage Grotesque',sans-serif; }
+  .box{ max-width:640px; margin:0 auto; }
+  code{ background:#0F1016; padding:2px 6px; border-radius:4px; }
+</style>
+</head>
+<body>
+  <div class="box">
+    <h1>AXTEC AI — backend demo</h1>
+    <p>This page mounts the AXTEC AI widget against this same backend (running locally on this server). Click the floating button in the bottom-right corner to try it.</p>
+    <p>Check <code>/api/health</code> to confirm the server is up and which data/AI mode it's running in.</p>
+    <p>To embed this widget on the real AXTEC site, copy <code>axtec-ai-widget.css</code> and <code>axtec-ai-widget.js</code> there and point <code>data-api-base</code> at this backend's public URL.</p>
+  </div>
+  <script src="axtec-ai-widget.js" defer data-api-base="" data-whatsapp="52NUMEROPLACEHOLDER"></script>
+</body>
+</html>
