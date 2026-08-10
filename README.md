@@ -1,4 +1,4 @@
-# AXTEC AI — commercial chatbot + smart quoting engine
+# AXTEC  — commercial chatbot + smart quoting engine
 
 Bilingual (ES/EN) backend + embeddable widget for AXTEC Technologies. Real
 conversation via the Anthropic API, a deterministic pricing engine the AI
